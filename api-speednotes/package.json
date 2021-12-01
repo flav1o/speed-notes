@@ -1,0 +1,37 @@
+{
+  "name": "speednotes-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/server.js",
+    "lint": "eslint src/** test/** --fix",
+    "test": "jest --watchAll"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.2.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.3",
+    "jest": "23.6.0",
+    "supertest": "3.3.0"
+  },
+  "dependencies": {
+    "bcrypt-nodejs": "^0.0.3",
+    "body-parser": "^1.19.0",
+    "consign": "^0.1.6",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "jwt-simple": "0.5.5",
+    "knex": "0.15.2",
+    "nodemon": "^2.0.15",
+    "passport": "0.4.0",
+    "passport-jwt": "^4.0.0",
+    "pg": "8.7.1"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "description": ""
+}
