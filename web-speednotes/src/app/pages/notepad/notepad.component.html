@@ -1,0 +1,13 @@
+
+<section id="notepad-wrapper">
+    <nav>
+        <img src="../../../assets/icons/info.svg" alt="">
+        <img src="../../../assets/icons/download.svg" alt="">
+        <img src="../../../assets/icons/settings.svg" alt="">
+    </nav>
+
+    <div class="line-counter">
+        <!-- Nº LINES -->
+    </div>
+    <textarea autosize id="content" cols="80" [(ngModel)]="contentTextArea" (input)="checkNumLines()"></textarea>
+</section>
