@@ -7,7 +7,7 @@ module.exports = {
             host: 'localhost',
             user: 'postgres',
             password: config.dbPassword,
-            database: 'ridehub'
+            database: 'apispeednotes'
         },
         debug: false,
         migrations: {
