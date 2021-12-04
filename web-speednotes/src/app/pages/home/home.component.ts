@@ -15,36 +15,36 @@ export class HomeComponent implements OnInit {
 
   lastSearchedList: Array<string> = [];
   filteredSearchedList: Array<string> = [];
-  
+
   constructor(
     private _http: HttpClient,
     private _getPad: GetPadService,
     private _router: Router,
     private _userData: UserDataService
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     
   }
 
-  search(searchurl:string): void {
-    if(!searchurl || searchurl.length == 0) console.log("Errou");
+  search(searchurl: string): void {
+    if (!searchurl || searchurl.length == 0) console.log("Errou");
 
-    this._getPad.apiGetData(searchurl).subscribe(      
+    this._getPad.apiGetData(searchurl).subscribe(
       data => this.searchOnSuccess(data, searchurl),
       error => this.searchOnError(error)
     );
   }
 
-  searchOnSuccess(data:Pad, searchedurl:string) {
+  searchOnSuccess(data: Pad, searchedurl: string) {
     console.log('success: ', data);
-    let { url, content, date, author, email} = data;
-    
+    let { url, content, date, author, email } = data;
+
     this._userData.userData = { url, content, date, author, email }
     this._router.navigate([`notepad/${searchedurl}`]);
   }
 
-  searchOnError(error:object) {
+  searchOnError(error: object) {
     console.log('erro: ', error);
   }
 

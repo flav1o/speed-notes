@@ -13,24 +13,24 @@ export class NotepadComponent implements OnInit {
   constructor(
     private _activatedRoute: ActivatedRoute,
     private elementRef: ElementRef,
-    private _router : Router,
-    private _userData : UserDataService
+    private _router: Router,
+    private _userData: UserDataService
   ) { }
 
   contentTextArea: string = "";
 
   ngOnInit(): void {
     const notepadID = this._activatedRoute.snapshot.paramMap;
-    
+
     this.contentTextArea = this._userData.userData.content;
     this.checkNumLines()
   }
 
 
   checkNumLines(): void {
-    
     const nLines: number = this.contentTextArea.split('\n').length;
     const divToAppend = document.getElementsByClassName("line-counter");
+
     divToAppend[0].innerHTML = "";
 
     for (let i = 1; i <= nLines; i++) {
