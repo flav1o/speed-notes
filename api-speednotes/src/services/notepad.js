@@ -2,7 +2,6 @@ const ValidationError = require('../errors/validationError');
 
 module.exports = (app) => {
     const findOne = async (filter = {}) => {
-      console.log("filter->", filter)
       return app.db('notepads').where(filter).first();
     };
 
@@ -14,6 +13,14 @@ module.exports = (app) => {
       return app.db('notepads').insert(notes, ['url', 'date', 'content', 'author', 'email'])
     };
   
-    return { findOne, create };
+    const update = async (notes, filter = {}) => {
+      if(!notes.date) throw new ValidationError('A data é um campo obrigatório!')
+      if(!notes.content) throw new ValidationError('A informação é um campo obrigatório!')
+
+      console.log("NOTES URL ->", notes.url)
+      return app.db('notepads').where(filter).update(notes, ['date', 'content', 'author', 'email']);
+    }
+
+    return { findOne, create, update };
 };
   

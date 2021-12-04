@@ -5,7 +5,6 @@ module.exports = (app) => {
   const router = express.Router();
 
   router.get('/:url', (req, res, next) => {
-    console.log("route -> ", req.params.url);
     app.services.notepad.findOne({ url: req.params.url })
       .then((result) => {
         if (result) res.status(200).json(result);
@@ -18,10 +17,10 @@ module.exports = (app) => {
           email: '',
         }
 
-        if (!result) 
+        if (!result)
           app.services.notepad.create(newPad)
-            .then(() => res.status(201).json(newPad));
-
+            .then(() => res.status(201).json(newPad))
+            .catch((err) => next(err));
       })
       .catch((err) => next(err));
   });
@@ -34,6 +33,16 @@ module.exports = (app) => {
       return next(err);
     }
   });
-  
+
+  router.put('/:url', async (req, res, next) => {
+    console.log("BODY PARAMS ->", req.body)
+    try {
+      const result = await app.services.notepad.update(req.body, {url:req.body.url})
+      return res.status(200).json(result[0])
+    } catch (err) {
+      return next(err);
+    }
+  })
+
   return router;
 }
