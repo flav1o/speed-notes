@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Pad } from '../interfaces/pad';
+import { Settings } from '../interfaces/settings';
 
 @Injectable({
   providedIn: 'root'
@@ -16,4 +17,8 @@ export class UserDataService {
     email: ''
   };
 
+  userSettings: Settings = {
+    autoSave: false,
+    lineCounter: true
+  }
 }

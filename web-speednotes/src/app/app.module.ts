@@ -7,12 +7,16 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './pages/home/home.component';
 import { NotepadComponent } from './pages/notepad/notepad.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    NotepadComponent
+    NotepadComponent,
+    NavbarComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,

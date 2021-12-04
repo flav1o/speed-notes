@@ -1,5 +1,7 @@
+<app-settings></app-settings>
+<app-navbar></app-navbar>
 <section id="notepad-wrapper">
-    <div class="line-counter">
+    <div class="line-counter" [ngClass]="{'removeNumbers': !userData.userSettings.lineCounter}">
         <!-- Nº LINES -->
     </div>
     <textarea autosize id="content" cols="80" [(ngModel)]="contentTextArea" (input)="checkNumLines()" #textContent></textarea>

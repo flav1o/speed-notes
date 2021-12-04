@@ -1,0 +1,15 @@
+<section id="settings" *ngIf="componentToggler.settingsModal">
+    <div class="settings-wraper">
+        <img src="../../../assets/icons/close.svg" alt="" (click)="closeSettingsModal()">
+        <div class="settings-item">
+            <img src="../../../assets/icons/sidenumbers.svg" alt="">
+            <span>Line Counter</span>
+            <input type="checkbox" #cbLineCounter [checked]="user.userSettings.lineCounter" (click)="changeSettings('lineCounter', $event)">
+        </div>
+        <div class="settings-item">
+            <img src="../../../assets/icons/timer.svg" alt="">
+            <span>Auto Save</span>
+            <input type="checkbox" #cbAutoSave [checked]="user.userSettings.autoSave" (click)="changeSettings('autoSave', $event)">
+        </div>
+    </div>
+</section>

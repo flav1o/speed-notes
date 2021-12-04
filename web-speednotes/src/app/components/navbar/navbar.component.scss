@@ -1,0 +1,14 @@
+nav {
+    height: 5vh;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: end;
+    position: fixed;
+    padding: 4vh 1vw;
+    
+    img {
+        cursor: pointer;
+    }
+}

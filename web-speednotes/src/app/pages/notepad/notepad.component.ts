@@ -1,6 +1,9 @@
+import { LocalizedString } from '@angular/compiler';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pad } from 'src/app/interfaces/pad';
+import { Settings } from 'src/app/interfaces/settings';
+import { ComponentTogglerService } from 'src/app/services/component-toggler.service';
 import { GetPadService } from 'src/app/services/get-pad.service';
 import { UpdateDataService } from 'src/app/services/update-data.service';
 import { UserDataService } from 'src/app/services/user-data.service';
@@ -16,9 +19,10 @@ export class NotepadComponent implements OnInit {
     private _activatedRoute: ActivatedRoute,
     private elementRef: ElementRef,
     private _router: Router,
-    private _userData: UserDataService,
+    public userData: UserDataService,
     private _getPad: GetPadService,
-    private _updateData: UpdateDataService
+    private _updateData: UpdateDataService,
+    public componentToggler: ComponentTogglerService
   ) { }
 
   contentTextArea: string = "";
@@ -26,26 +30,26 @@ export class NotepadComponent implements OnInit {
   latestUpdateContent: string = "";
 
   ngOnInit(): void {
+    this.userData.userSettings = JSON.parse(localStorage.getItem('userSettings') || '{ autoSave: false, lineCounter: true }');
     this.notepadID = this._activatedRoute.snapshot.paramMap.get('id') || '0';
 
-    if (this._userData.userData.url === '') {
+    if (this.userData.userData.url === '')
       this._getPad.apiGetData(this.notepadID).subscribe(
         data => this.onSuccess(data),
         error => console.log(error)
-        );
-      }
-      
-    this.contentTextArea = this._userData.userData.content;
-    this.checkNumLines()
-    this.autoSave()
+      );
+
+    console.log("USER ->", this.userData.userSettings)
+    this.contentTextArea = this.userData.userData.content;
   }
 
   onSuccess(data: Pad): void {
     let { url, date, content, author, email } = data;
-    this._userData.userData = { url, date, content, author, email }
 
-    this.contentTextArea = this._userData.userData.content;
+    this.userData.userData = { url, date, content, author, email }
+    this.contentTextArea = this.userData.userData.content;
     this.checkNumLines()
+    this.autoSave()
   }
 
   checkNumLines(): void {
@@ -60,11 +64,12 @@ export class NotepadComponent implements OnInit {
   }
 
   autoSave(): void {
+    if(!this.userData.userSettings.autoSave) return;
     setInterval(() => {
-      this._userData.userData.content = this.contentTextArea;
+      this.userData.userData.content = this.contentTextArea;
       
-      if(this.latestUpdateContent !== this._userData.userData.content) {
-        this._updateData.updateData(this._userData.userData, +this.notepadID).subscribe((data) =>  {
+      if(this.latestUpdateContent !== this.userData.userData.content) {
+        this._updateData.updateData(this.userData.userData, +this.notepadID).subscribe((data) =>  {
           this.latestUpdateContent = data.content;
         });
       }

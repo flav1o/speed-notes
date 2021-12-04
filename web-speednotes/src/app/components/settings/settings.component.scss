@@ -1,0 +1,57 @@
+@import "../../../styles.scss";
+
+#settings {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.63);
+  z-index: 999;
+  position: fixed;
+  display: flex;
+  align-items: center;
+
+  div.settings-wraper {
+    min-width: 25vw;
+    margin: auto;
+    min-height: 25vh;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 10px;
+    position: relative;
+
+    > img {
+      width: 30px;
+      position: absolute;
+      top: -3vh;
+      right: -5vw;
+      cursor: pointer;
+    }
+  }
+}
+
+div.settings-wraper .settings-item {
+  width: 100%;
+  min-height: 6vh;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: .5vh 0vw;
+
+  img {
+    width: 25px;
+    margin: 0vh .5vw;
+  }
+
+  span {
+    font-family: $main-font;
+  }
+
+  input {
+    margin-left: auto;
+    margin-right: 1vw;
+    cursor: pointer;
+  }
+}
+
+

@@ -1,19 +1,22 @@
 @import "../../../styles.scss";
 
+.removeNumbers {
+    display: none;
+}
+
 #notepad-wrapper {
-    width: 100vw;
+    width: 100%;
     min-height: 100vh;
-    padding-top: 7vh;
     background-image: $background-gradient;
     display: flex;
     flex-direction: row;
+    padding-top: 7vh;
+    z-index: -1;
 }
-
 
 .line-counter {
     min-height: 90vh;
     min-width: 3vw;
-    margin-right: 2px solid white;
 }
 ::ng-deep.numberOnLine {
     text-align: end;
