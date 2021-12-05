@@ -28,7 +28,10 @@ export class NotepadComponent implements OnInit {
   latestUpdateContent: string = "";
 
   ngOnInit(): void {
-    this.userData.userSettings = JSON.parse(localStorage.getItem('userSettings') || '{ autoSave: false, lineCounter: true }');
+    let newSettings = JSON.stringify({autoSave: false, lineCounter: true});
+    if(!localStorage.getItem('userSettings')) localStorage.setItem('userSettings', newSettings)
+    
+    this.userData.userSettings = JSON.parse(localStorage.getItem('currentUser') ||newSettings);
     this.notepadID = this._activatedRoute.snapshot.paramMap.get('id') || '0';
 
     if (this.userData.userData.url === '')
