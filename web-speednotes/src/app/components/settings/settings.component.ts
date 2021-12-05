@@ -14,8 +14,7 @@ export class SettingsComponent implements OnInit {
       public user: UserDataService
     ) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   changeSettings(settingItem: string, event:any) {
     if(settingItem === 'autoSave') 

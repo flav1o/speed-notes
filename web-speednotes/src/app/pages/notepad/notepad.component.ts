@@ -1,8 +1,7 @@
 import { LocalizedString } from '@angular/compiler';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pad } from 'src/app/interfaces/pad';
-import { Settings } from 'src/app/interfaces/settings';
 import { ComponentTogglerService } from 'src/app/services/component-toggler.service';
 import { GetPadService } from 'src/app/services/get-pad.service';
 import { UpdateDataService } from 'src/app/services/update-data.service';
@@ -14,7 +13,6 @@ import { UserDataService } from 'src/app/services/user-data.service';
   styleUrls: ['./notepad.component.scss']
 })
 export class NotepadComponent implements OnInit {
-
   constructor(
     private _activatedRoute: ActivatedRoute,
     private elementRef: ElementRef,
@@ -52,17 +50,18 @@ export class NotepadComponent implements OnInit {
     this.autoSave()
   }
 
-  checkNumLines(): void {
+  checkNumLines(text?:string): void {
     const nLines: number = this.contentTextArea.split('\n').length;
     const divToAppend = document.getElementsByClassName("line-counter");
-
     divToAppend[0].innerHTML = "";
+    
+    if(text) this.userData.userData.content = text;
 
     for (let i = 1; i <= nLines; i++) {
       divToAppend[0].innerHTML += `<p class="numberOnLine">${i}\n</p>`;
     }
   }
-
+  
   autoSave(): void {
     if(!this.userData.userSettings.autoSave) return;
     setInterval(() => {
@@ -75,5 +74,4 @@ export class NotepadComponent implements OnInit {
       }
     }, 5000);
   }
-
 }

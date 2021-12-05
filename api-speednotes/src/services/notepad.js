@@ -21,6 +21,10 @@ module.exports = (app) => {
       return app.db('notepads').where(filter).update(notes, ['date', 'content', 'author', 'email']);
     }
 
-    return { findOne, create, update };
+    const deletePad = async (filter = {}) => {
+      return app.db('notepads').where(filter).delete();
+    }
+
+    return { findOne, create, update, deletePad };
 };
   

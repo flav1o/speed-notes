@@ -4,5 +4,5 @@
     <div class="line-counter" [ngClass]="{'removeNumbers': !userData.userSettings.lineCounter}">
         <!-- Nº LINES -->
     </div>
-    <textarea autosize id="content" cols="80" [(ngModel)]="contentTextArea" (input)="checkNumLines()" #textContent></textarea>
+    <textarea autosize id="content" cols="80" [(ngModel)]="contentTextArea" (input)="checkNumLines(textContent.value)" #textContent></textarea>
 </section>

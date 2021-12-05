@@ -44,5 +44,13 @@ module.exports = (app) => {
     }
   })
 
+  router.delete('/:url', async (req, res, next) => {
+    app.services.notepad.deletePad({url: req.params.url})
+    .then((result) => {
+      return res.status(200).json({message: `Notepad ${req.params.url} was deleted successfully!`});
+    })
+    .catch((error) => next(error));
+  });
+
   return router;
 }

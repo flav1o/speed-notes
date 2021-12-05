@@ -18,6 +18,8 @@
     "@angular/platform-browser": "~12.1.2",
     "@angular/platform-browser-dynamic": "~12.1.2",
     "@angular/router": "~12.1.2",
+    "@types/file-saver": "^2.0.4",
+    "file-saver": "^2.0.5",
     "ngx-textarea-autosize": "^2.0.3",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",
