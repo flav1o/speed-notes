@@ -1,4 +1,6 @@
+
 export interface Settings {
     lineCounter: boolean | string,
-    autoSave: boolean | string
+    autoSave: boolean | string,
+    background: string
 }

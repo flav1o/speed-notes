@@ -52,6 +52,17 @@ div.settings-wraper .settings-item {
     margin-right: 1vw;
     cursor: pointer;
   }
+  
+  select {
+    margin-left: auto;
+    margin-right: 1vw;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    padding: 5px 10px;
+    font-family: $main-font;
+    text-transform: capitalize;
+  }
 }
 
 

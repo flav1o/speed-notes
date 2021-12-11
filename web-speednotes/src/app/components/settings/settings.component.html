@@ -6,10 +6,22 @@
             <span>Line Counter</span>
             <input type="checkbox" #cbLineCounter [checked]="user.userSettings.lineCounter" (click)="changeSettings('lineCounter', $event)">
         </div>
+
         <div class="settings-item">
             <img src="../../../assets/icons/timer.svg" alt="">
             <span>Auto Save</span>
             <input type="checkbox" #cbAutoSave [checked]="user.userSettings.autoSave" (click)="changeSettings('autoSave', $event)">
+        </div>
+
+        <div class="settings-item">
+            <img src="../../../assets/icons/image_alt.svg" alt="">
+            <span>Background</span>
+            <select name="backgrounds" id="" #dbBackground (change)="changeSettings('background', dbBackground.value)">
+                <option selected="{{user.userSettings.background}}">{{user.userSettings.background}}</option>
+                <option value="night">night</option>
+                <option value="fade">fade</option>
+                <option value="fade">custom</option>
+            </select>
         </div>
     </div>
 </section>

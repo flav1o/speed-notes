@@ -23,7 +23,8 @@ export class HomeComponent implements OnInit {
     private _userData: UserDataService
   ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   search(searchurl: string): void {
     if (!searchurl || searchurl.length == 0) console.log("Errou");

@@ -1,6 +1,8 @@
 <app-settings></app-settings>
 <app-navbar></app-navbar>
-<section id="notepad-wrapper">
+
+<section id="notepad-wrapper" [ngClass]="{'nightbackground': userData.userSettings.background == 'night'}">
+    <div class="dimmer"></div>
     <div class="line-counter" [ngClass]="{'removeNumbers': !userData.userSettings.lineCounter}">
         <!-- Nº LINES -->
     </div>

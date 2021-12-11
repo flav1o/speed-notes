@@ -19,6 +19,7 @@ export class UserDataService {
 
   userSettings: Settings = {
     autoSave: false,
-    lineCounter: true
+    lineCounter: true,
+    background: "https://i.pinimg.com/originals/85/9a/f7/859af748d1eed0d67d5801a6df188a89.jpg"
   }
 }

@@ -1,4 +1,3 @@
-import { LocalizedString } from '@angular/compiler';
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pad } from 'src/app/interfaces/pad';
@@ -28,10 +27,9 @@ export class NotepadComponent implements OnInit {
   latestUpdateContent: string = "";
 
   ngOnInit(): void {
-    let newSettings = JSON.stringify({autoSave: false, lineCounter: true});
-    if(!localStorage.getItem('userSettings')) localStorage.setItem('userSettings', newSettings)
+    const newSettings = JSON.stringify({autoSave: false, lineCounter: false, background: "night"});
     
-    this.userData.userSettings = JSON.parse(localStorage.getItem('currentUser') ||newSettings);
+    this.userData.userSettings = JSON.parse(localStorage.getItem('userSettings') || newSettings);
     this.notepadID = this._activatedRoute.snapshot.paramMap.get('id') || '0';
 
     if (this.userData.userData.url === '')
@@ -42,6 +40,7 @@ export class NotepadComponent implements OnInit {
 
     console.log("USER ->", this.userData.userSettings)
     this.contentTextArea = this.userData.userData.content;
+    this.checkNumLines()
   }
 
   onSuccess(data: Pad): void {
@@ -73,6 +72,7 @@ export class NotepadComponent implements OnInit {
       if(this.latestUpdateContent !== this.userData.userData.content) {
         this._updateData.updateData(this.userData.userData, +this.notepadID).subscribe((data) =>  {
           this.latestUpdateContent = data.content;
+          console.log("saving")
         });
       }
     }, 5000);

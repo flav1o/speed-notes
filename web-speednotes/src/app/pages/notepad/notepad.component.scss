@@ -4,6 +4,20 @@
     display: none;
 }
 
+.dimmer {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0);
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    display: block;
+}
+
+.nightbackground {
+    background-image: none !important;
+    background-color: #1c2125 !important;
+}
+
 #notepad-wrapper {
     width: 100%;
     min-height: 100vh;
@@ -11,18 +25,21 @@
     display: flex;
     flex-direction: row;
     padding-top: 7vh;
-    z-index: -1;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 }
 
 .line-counter {
     min-height: 90vh;
     min-width: 3vw;
+    z-index: 2;
 }
 ::ng-deep.numberOnLine {
     text-align: end;
     font-weight: 500;
     font-size: 1rem;
-    color: white;
+    color: $text-color;
     padding: 3px;
 }
 
@@ -31,7 +48,7 @@
     min-height: 90vh;
     background-color: transparent;
     overflow-wrap: normal;
-    color: white;
+    color: $text-color;
     font-size: 1rem;
     line-height: 24px;
     outline: none;
@@ -39,6 +56,7 @@
     padding-left: 2vw;
     padding-right: 3vw;
     resize: none;
+    z-index: 2;
 }
 
 #notepad-wrapper nav {

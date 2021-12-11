@@ -14,16 +14,25 @@ export class SettingsComponent implements OnInit {
       public user: UserDataService
     ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log("SETTINGS -> ", console.log(localStorage.getItem('userSettings')));
+  }
 
   changeSettings(settingItem: string, event:any) {
+    
     if(settingItem === 'autoSave') 
       this.user.userSettings.autoSave = event.explicitOriginalTarget.checked;
 
     if(settingItem === 'lineCounter') 
       this.user.userSettings.lineCounter = event.explicitOriginalTarget.checked;
+      
+    if(settingItem === 'background')
+      this.user.userSettings.background = event;
+
+    console.log(event);
 
     localStorage.setItem('userSettings', JSON.stringify(this.user.userSettings));
+    console.log("SAVE NEW SETTINGS -> ", localStorage.getItem('userSettings'));
   }
 
   closeSettingsModal(): void {
