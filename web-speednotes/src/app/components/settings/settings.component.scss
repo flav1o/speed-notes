@@ -66,3 +66,14 @@ div.settings-wraper .settings-item {
 }
 
 
+
+@media only screen and (max-width: 600px) {
+  div.settings-wraper {
+    width: 90%;
+    min-height: 35vh;
+  
+    .settings-item {
+      padding: 1vh 2vw;
+    }
+  }
+}

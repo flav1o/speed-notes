@@ -61,3 +61,10 @@ button#createPad {
         transform: translateY(3px);
     }
 }
+
+
+@media only screen and (max-width: 600px) {
+    input[type="text"] {
+        width: 80%;
+    }
+}
