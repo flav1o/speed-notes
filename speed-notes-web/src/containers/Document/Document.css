@@ -1,0 +1,10 @@
+#document-writeable-area {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(32, 31, 31, 0.839);
+    outline: none;
+    border: 0;
+    resize: none;
+    color: white;
+    padding: 3vw;
+}
