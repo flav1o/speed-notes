@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
-import "./Document.css";
 import DocumentBackground from "../../components/DocumentBackground/DocumentBackground";
+import CodeEditor from "@uiw/react-textarea-code-editor";
 
 let socket: any = null;
 
@@ -30,15 +30,29 @@ const Document = () => {
 		});
 
 	return (
-		<div>
+		<>
 			<DocumentBackground />
-			<textarea
-				id="document-writeable-area"
+			<CodeEditor
 				value={documentText}
+				language="tsx"
+				padding={15}
 				onChange={(e) => updateText(e.target.value)}
+				style={styles.documentWriteableArea}
 			/>
-		</div>
+		</>
 	);
+};
+
+const styles = {
+	documentWriteableArea: {
+		width: "100%",
+		height: "100vh",
+		position: "fixed" as "fixed",
+		overflow: "auto",
+		fontSize: "1.1rem",
+		backgroundColor: "#17161ab3",
+		color: "white",
+	},
 };
 
 export { Document };
