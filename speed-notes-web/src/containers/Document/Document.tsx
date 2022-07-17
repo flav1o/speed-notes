@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
-import DocumentBackground from "../../components/DocumentBackground/DocumentBackground";
-import CodeEditor from "@uiw/react-textarea-code-editor";
+import CodeMirror from "@uiw/react-codemirror";
+import { javascript } from "@codemirror/lang-javascript";
 
 let socket: any = null;
 
 const Document = () => {
+	const { id: documentId } = useParams<{ id: string }>();
 	const [documentText, setDocumentText] = useState<string>(
 		"Hi! We are loading..."
 	);
-
-	const { id: documentId } = useParams<{ id: string }>();
 
 	useEffect(() => {
 		socket = io("ws://localhost:3001");
@@ -21,38 +20,31 @@ const Document = () => {
 		socket.on("get-document-content", (messagesFromServer: string) =>
 			setDocumentText(messagesFromServer)
 		);
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const updateText = (userInput: string) =>
+	const updateText = React.useCallback((value: string) => {
 		socket.emit("send-document-content", {
-			documentContent: userInput,
+			documentContent: value,
 			documentId: documentId,
 		});
 
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	return (
 		<>
-			<DocumentBackground />
-			<CodeEditor
+			<CodeMirror
+				height="100vh"
+				extensions={[javascript({ jsx: true })]}
+				onChange={updateText}
+				theme="dark"
+				lang="javascript"
 				value={documentText}
-				language="tsx"
-				padding={15}
-				onChange={(e) => updateText(e.target.value)}
-				style={styles.documentWriteableArea}
 			/>
 		</>
 	);
-};
-
-const styles = {
-	documentWriteableArea: {
-		width: "100%",
-		height: "100vh",
-		position: "fixed" as "fixed",
-		overflow: "auto",
-		fontSize: "1.1rem",
-		backgroundColor: "#17161ab3",
-		color: "white",
-	},
 };
 
 export { Document };
