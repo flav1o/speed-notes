@@ -1,0 +1,11 @@
+{
+    "THEMES": {
+        "THEMES_PRESET_LIGHT": "Light",
+        "THEMES_PRESET_DARK": "Dark"
+    },
+    "FOOTER": {
+        "THEME": "Theme",
+        "SAVE": "Save",
+        "LOCK": "Lock"
+    }
+}

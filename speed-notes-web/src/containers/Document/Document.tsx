@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { Editor, Footer } from "../../components";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
-import CodeMirror from "@uiw/react-codemirror";
-import { javascript } from "@codemirror/lang-javascript";
 
 let socket: any = null;
 
@@ -13,36 +12,27 @@ const Document = () => {
 	);
 
 	useEffect(() => {
-		socket = io("ws://localhost:3001");
+		socket = io("http://localhost:8001");
 
-		socket.emit("get-document-content", documentId);
-
-		socket.on("get-document-content", (messagesFromServer: string) =>
-			setDocumentText(messagesFromServer)
-		);
-
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-
-	const updateText = React.useCallback((value: string) => {
-		socket.emit("send-document-content", {
-			documentContent: value,
-			documentId: documentId,
+		socket.on("updating-document-content", (content: string) => {
+			setDocumentText(content);
 		});
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	const updateText = React.useCallback((documentText: string) => {
+		socket.emit("send-document-content", {
+			documentText,
+			documentId,
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	return (
 		<>
-			<CodeMirror
-				height="100vh"
-				extensions={[javascript({ jsx: true })]}
-				onChange={updateText}
-				theme="dark"
-				lang="javascript"
-				value={documentText}
-			/>
+			<Editor onChange={updateText} documentText={documentText} />
+			<Footer />
 		</>
 	);
 };
