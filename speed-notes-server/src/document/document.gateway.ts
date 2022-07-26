@@ -14,6 +14,14 @@ export class DocumentGateway {
   @WebSocketServer()
   server;
 
+  @SubscribeMessage('join-document')
+  handleJoinRoom(
+    @MessageBody() documentId: string,
+    @ConnectedSocket() client: Socket,
+  ) {
+    client.join(documentId);
+  }
+
   @SubscribeMessage('send-document-content')
   handleDocumentText(
     @ConnectedSocket() client: Socket,
@@ -22,13 +30,5 @@ export class DocumentGateway {
     client
       .to(document.documentId)
       .emit('updating-document-content', document.documentText);
-  }
-
-  @SubscribeMessage('join-document')
-  handleJoinRoom(
-    @MessageBody() documentId: string,
-    @ConnectedSocket() client: Socket,
-  ) {
-    client.join(documentId);
   }
 }
