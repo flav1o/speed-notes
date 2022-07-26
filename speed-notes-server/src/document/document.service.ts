@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateDocumentInput, Document } from 'src/graphql/graphql-schema';
@@ -20,6 +20,10 @@ export class DocumentService {
 
   async findDocumentById(documentId: string): Promise<Document> {
     const document: Document = await this.documentModel.findById(documentId);
+
+    if (!document)
+      throw new HttpException('DOC.NOT_FOUND', HttpStatus.NOT_FOUND);
+
     return document;
   }
 }

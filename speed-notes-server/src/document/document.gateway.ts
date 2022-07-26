@@ -1,3 +1,4 @@
+import { HttpException } from '@nestjs/common';
 import {
   SubscribeMessage,
   MessageBody,
@@ -6,7 +7,7 @@ import {
   ConnectedSocket,
 } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
-import { CreateDocumentInput, Document } from 'src/graphql/graphql-schema';
+import { Document } from 'src/graphql/graphql-schema';
 import { DocumentService } from './document.service';
 
 @WebSocketGateway(8001, {
@@ -23,13 +24,15 @@ export class DocumentGateway {
     @MessageBody() clientDocumentId: string,
     @ConnectedSocket() client: Socket,
   ) {
-    const documentContent: Document =
-      await this.documentService.findDocumentById(clientDocumentId);
-
-    client.join(clientDocumentId);
-    client
-      .to(clientDocumentId)
-      .emit('updating-document-content', documentContent.content);
+    this.documentService
+      .findDocumentById(clientDocumentId)
+      .then((res: Document) => {
+        client.join(clientDocumentId);
+        client
+          .to(clientDocumentId)
+          .emit('updating-document-content', res.content);
+      })
+      .catch((err: HttpException) => client.emit('exception', err));
   }
 
   @SubscribeMessage('send-document-content')
