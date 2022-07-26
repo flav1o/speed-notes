@@ -6,20 +6,30 @@ import {
   ConnectedSocket,
 } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
+import { CreateDocumentInput, Document } from 'src/graphql/graphql-schema';
+import { DocumentService } from './document.service';
 
 @WebSocketGateway(8001, {
   cors: '*',
 })
 export class DocumentGateway {
+  constructor(private readonly documentService: DocumentService) {}
+
   @WebSocketServer()
   server;
 
   @SubscribeMessage('join-document')
-  handleJoinRoom(
-    @MessageBody() documentId: string,
+  async handleJoinRoom(
+    @MessageBody() clientDocumentId: string,
     @ConnectedSocket() client: Socket,
   ) {
-    client.join(documentId);
+    const documentContent: Document =
+      await this.documentService.findDocumentById(clientDocumentId);
+
+    client.join(clientDocumentId);
+    client
+      .to(clientDocumentId)
+      .emit('updating-document-content', documentContent.content);
   }
 
   @SubscribeMessage('send-document-content')
