@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import * as bcrypt from 'bcrypt';
@@ -21,7 +21,7 @@ export class AuthService {
     await this.usersService.createUser({
       ...authCredentialsDto,
       password: hashedPassword,
-      confirmationCode: uuidv4(),
+      confirmationCode: uuidv4().split('-')[0],
       confirmed: false,
     });
   }
@@ -37,7 +37,10 @@ export class AuthService {
       !user &&
       !(await bcrypt.compare(authCredentialsDto.password, user.password))
     )
-      throw new Error('Invalid credentials');
+      throw new HttpException(
+        'AUTH.INVALID_CREDENTIALS',
+        HttpStatus.UNAUTHORIZED,
+      );
 
     const payload: JwtPayload = { email: user.email };
     const accessToken: string = await this.jwtService.sign(payload);

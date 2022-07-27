@@ -1,12 +1,13 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { ENTITIES_KEYS } from 'src/constants';
 import { CreateDocumentInput, Document } from 'src/graphql/graphql-schema';
 
 @Injectable()
 export class DocumentService {
   constructor(
-    @InjectModel('document')
+    @InjectModel(ENTITIES_KEYS.DOCUMENT_MODEL)
     private readonly documentModel: Model<Document>,
   ) {}
 
