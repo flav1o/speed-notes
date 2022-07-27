@@ -7,9 +7,13 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ApolloDriver } from '@nestjs/apollo';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+
 @Module({
   imports: [
     DocumentModule,
+    UsersModule,
     MongooseModule.forRoot('mongodb://localhost:27017/speednotes', {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -21,6 +25,7 @@ import { ApolloDriver } from '@nestjs/apollo';
         path: join(process.cwd(), 'src/graphql-schema.ts'),
       },
     }),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService, DocumentGateway],
