@@ -34,7 +34,7 @@ export class AuthService {
     );
 
     if (
-      !user &&
+      !user ||
       !(await bcrypt.compare(authCredentialsDto.password, user.password))
     )
       throw new HttpException(
