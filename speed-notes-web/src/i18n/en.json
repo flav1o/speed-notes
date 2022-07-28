@@ -7,5 +7,9 @@
         "THEME": "Theme",
         "SAVE": "Save",
         "LOCK": "Lock"
+    },
+    "AUTH": {
+        "LOGIN": "Login",
+        "REGISTER": "Register"
     }
 }

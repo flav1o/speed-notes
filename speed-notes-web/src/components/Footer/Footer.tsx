@@ -7,7 +7,7 @@ export const Footer = () => {
 	const { t } = useTranslation();
 
 	return (
-		<Box width="50vw" style={{ backgroundColor: "red" }}>
+		<Box width="50vw">
 			<Button endIcon={<RiSave2Fill />}>{t("FOOTER.SAVE")}</Button>
 			<Button endIcon={<RiFileLockFill />}>{t("FOOTER.LOCK")}</Button>
 		</Box>
