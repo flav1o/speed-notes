@@ -5,6 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './dto/jwt-payload.interface';
+import { User } from 'src/graphql/graphql-schema';
 
 @Injectable()
 export class AuthService {
@@ -42,9 +43,21 @@ export class AuthService {
         HttpStatus.UNAUTHORIZED,
       );
 
+    if (!user.confirmed)
+      throw new HttpException(
+        'AUTH.USER_NOT_CONFIRMED',
+        HttpStatus.UNAUTHORIZED,
+      );
+
     const payload: JwtPayload = { email: user.email };
     const accessToken: string = await this.jwtService.sign(payload);
 
+    return { accessToken };
+  }
+
+  async confirmAccount(email: string, token: string): Promise<{ accessToken }> {
+    const user = await this.usersService.confirmUser(email, token);
+    const accessToken = await this.jwtService.sign({ email: user.email });
     return { accessToken };
   }
 }

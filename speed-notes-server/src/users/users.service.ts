@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ENTITIES_KEYS } from 'src/constants';
 import { User } from 'src/graphql/graphql-schema';
-
+import * as mongoose from 'mongoose';
 @Injectable()
 export class UsersService {
   constructor(
@@ -40,8 +40,8 @@ export class UsersService {
     if (user.confirmationCode !== token)
       throw new HttpException('USERS.INVALID_TOKEN', HttpStatus.BAD_REQUEST);
 
-    return await this.usersModel.findOneAndUpdate(
-      { email },
+    return await this.usersModel.findByIdAndUpdate(
+      { _id: user._id },
       { confirmed: true },
       { new: true },
     );
