@@ -10,6 +10,10 @@
     },
     "AUTH": {
         "LOGIN": "Login",
-        "REGISTER": "Register"
+        "REGISTER": "Register",
+        "INSERT_CONFIRMATION_CODE": "Insert Confirmation Code",
+        "CONFIRMATION_CODE": "Code",
+        "RESEND_CODE": "Resend",
+        "CONFIRM_ACCOUNT": "Confirm"
     }
 }

@@ -8,7 +8,7 @@ interface ITextInputProps {
 	type: INPUT_TYPE;
 	control: any;
 	defaultValue?: string | number;
-	secret?: boolean;
+	inputType: "text" | "number" | "password" | "email";
 	placeholder?: string;
 	onChange?: (name: string, value: string | number) => void;
 	addIcon?: {
@@ -16,6 +16,8 @@ interface ITextInputProps {
 		iconSide: "start" | "end";
 		color?: string;
 	};
+	rules?: any;
+	error?: string | boolean;
 }
 
 export const TextInput: React.FC<ITextInputProps> = ({
@@ -23,23 +25,26 @@ export const TextInput: React.FC<ITextInputProps> = ({
 	control,
 	placeholder,
 	defaultValue,
-	secret,
+	inputType,
 	type,
 	addIcon,
+	rules,
+	error,
 }) => {
-	const input = (onChange: any, value: any) => {
+	const input = (onChange: any, value: any, error?: any) => {
 		return {
 			[INPUT_TYPE.SINGLE_LINE]: (
 				<TextField
-					required
 					placeholder={placeholder}
 					name={name}
 					onChange={onChange}
+					error={!!error}
 					value={value}
 					label={placeholder}
 					variant="standard"
-					type={secret ? "password" : "text"}
+					type={inputType}
 					style={{ width: "20vw" }}
+					helperText={error ? error : null}
 					InputProps={
 						addIcon?.iconSide === "start"
 							? {
@@ -66,8 +71,10 @@ export const TextInput: React.FC<ITextInputProps> = ({
 					onChange={onChange}
 					value={value}
 					label={placeholder}
-					variant="standard"
-					type={secret ? "password" : "text"}
+					variant="outlined"
+					type={inputType}
+					error={!!error}
+					helperText={error ? error : null}
 				/>
 			),
 		};
@@ -78,7 +85,10 @@ export const TextInput: React.FC<ITextInputProps> = ({
 			name={name}
 			control={control}
 			defaultValue={defaultValue ?? ""}
-			render={({ field: { onChange, value } }) => input(onChange, value)[type]}
+			rules={rules}
+			render={({ field: { onChange, value } }) =>
+				input(onChange, value, error)[type]
+			}
 		/>
 	);
 };

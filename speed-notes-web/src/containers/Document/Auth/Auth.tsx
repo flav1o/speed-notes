@@ -1,19 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@mui/styles";
 import { ThemeColors } from "../../../styles/common";
-import { Box, Grid, Paper, Button, Typography, Theme } from "@mui/material";
+import { Box, Grid, Button, Typography, Theme, TextField } from "@mui/material";
 import sidePanel from "../../../assets/backgrounds/auth-forest-background.png";
 import BrandLogo from "../../../assets/branding/logo.png";
-import { TextInput } from "../../../components/Input/TextInput";
+import { TextInput, Dialog } from "../../../components/index";
 import { INPUT_TYPE } from "../../../utils";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { RiLockLine, RiMailLine } from "react-icons/ri";
-import { AUTH_FORM_NAMES } from "../../../constants";
+import { AUTH_FORM_NAMES, AUTH_LOCAL_STORAGE_TOKEN } from "../../../constants";
+import { AuthService } from "../../../services";
+import { useDispatch } from "react-redux";
+import { authActions } from "../../../store/reducers/auth";
 
 interface IAuthFormData {
-	Email: string;
-	Password: string;
+	email: string;
+	password: string;
+}
+
+interface IAccConfirmationData {
+	email: string;
+	confirmationCode: string;
+	isModalVisible: boolean;
 }
 
 const authStyle = makeStyles((theme: Theme) => ({
@@ -45,13 +54,60 @@ const authStyle = makeStyles((theme: Theme) => ({
 const Auth = () => {
 	const { t } = useTranslation();
 	const authClasses = authStyle();
-	const { handleSubmit, control } = useForm<IAuthFormData>();
+	const { handleSubmit, control, reset } = useForm<IAuthFormData>();
+	const dispatch = useDispatch();
 
-	const [isLogin, setIsLogin] = React.useState<boolean>(true);
+	const [error, setError] = useState<string | undefined>(undefined);
+	const [accConfirmationError, setAccConfirmationError] = useState<
+		string | undefined
+	>(undefined);
+	const [isLogin, setIsLogin] = useState<boolean>(true);
+	const [accConfirmation, setAccConfirmation] =
+		React.useState<IAccConfirmationData>({
+			confirmationCode: "",
+			email: "",
+			isModalVisible: false,
+		});
 
-	const submitFormHandler = (data: { Email: string; Password: string }) => {
-		console.log("test");
-		console.log(data);
+	const submitFormHandler = (formData: IAuthFormData) => {
+		const { email, password } = formData;
+
+		if (!isLogin)
+			return AuthService.register(email, password)
+				.then(() => {
+					reset();
+					setIsLogin(true);
+				})
+				.catch((e) => setError(e?.response?.data.message));
+
+		AuthService.login(email, password)
+			.then((res) => {
+				localStorage.setItem(AUTH_LOCAL_STORAGE_TOKEN, res.data.accessToken);
+				dispatch(authActions.authenticate());
+			})
+			.catch((e) => {
+				if (e?.response?.data.message === "AUTH.USER_NOT_CONFIRMED")
+					return setAccConfirmation((prev) => ({
+						...prev,
+						isModalVisible: true,
+						email,
+					}));
+			});
+	};
+
+	const onAccConfirmation = (email: string, confirmationCode: string) => {
+		AuthService.confirmAccount(email, confirmationCode)
+			.then(() => {
+				setAccConfirmationError(undefined);
+				setAccConfirmation((prev) => ({
+					...prev,
+					isModalVisible: false,
+				}));
+			})
+			.catch((e) => {
+				setAccConfirmationError(e?.response?.data.message);
+				console.log(e?.response?.data.message);
+			});
 	};
 
 	return (
@@ -65,6 +121,41 @@ const Auth = () => {
 				width: "100vw",
 			}}
 		>
+			<Dialog
+				isOpen={accConfirmation.isModalVisible}
+				buttons={{
+					left: {
+						text: t("AUTH.RESEND_CODE"),
+						onClick: () => {
+							setAccConfirmation((prev) => ({
+								...prev,
+								isModalVisible: true,
+							}));
+						},
+					},
+					right: {
+						text: t("AUTH.CONFIRM_ACCOUNT"),
+						onClick: () =>
+							onAccConfirmation(
+								accConfirmation.email,
+								accConfirmation.confirmationCode
+							),
+					},
+				}}
+				title={t("AUTH.INSERT_CONFIRMATION_CODE")}
+			>
+				<TextField
+					fullWidth
+					placeholder={t("AUTH.CONFIRMATION_CODE")}
+					error={!!accConfirmationError}
+					onChange={(e) =>
+						setAccConfirmation((prev) => ({
+							...prev,
+							confirmationCode: e.target.value,
+						}))
+					}
+				/>
+			</Dialog>
 			<Grid item md={6} display="flex" className={authClasses.formWrapper}>
 				<Grid
 					item
@@ -133,9 +224,14 @@ const Auth = () => {
 							<TextInput
 								name={AUTH_FORM_NAMES.EMAIL}
 								type={INPUT_TYPE.SINGLE_LINE}
+								rules={{
+									required: t("GENERAL.REQUIRED_FIELD") as string,
+								}}
 								control={control}
 								placeholder="Email"
 								addIcon={{ icon: <RiMailLine />, iconSide: "end" }}
+								inputType="email"
+								error={!!error && " "}
 							/>
 						</Box>
 						<Box
@@ -150,8 +246,9 @@ const Auth = () => {
 								type={INPUT_TYPE.SINGLE_LINE}
 								control={control}
 								placeholder="Password"
-								secret
+								inputType="password"
 								addIcon={{ icon: <RiLockLine />, iconSide: "end" }}
+								error={error}
 							/>
 						</Box>
 						<Button

@@ -1,5 +1,7 @@
 export enum AUTH_FORM_NAMES {
-	EMAIL = "Email",
-	PASSWORD = "Password",
-	FORM_NAME = "Authentication",
+	EMAIL = "email",
+	PASSWORD = "password",
+	FORM_NAME = "authentication",
 }
+
+export const AUTH_LOCAL_STORAGE_TOKEN = "SPEED-NOTES-AUTH-TOKEN";
