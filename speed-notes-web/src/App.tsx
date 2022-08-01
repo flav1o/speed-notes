@@ -21,7 +21,9 @@ function App() {
 	useEffect(() => {
 		if (authState.accessToken)
 			AuthService.validateToken()
-				.then(() => dispatch(authActions.authenticate()))
+				.then((res) => {
+					dispatch(authActions.authenticate(res?.data));
+				})
 				.catch(() => dispatch(authActions.logout()));
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps

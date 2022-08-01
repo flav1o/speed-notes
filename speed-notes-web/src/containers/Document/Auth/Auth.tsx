@@ -83,7 +83,7 @@ const Auth = () => {
 		AuthService.login(email, password)
 			.then((res) => {
 				localStorage.setItem(AUTH_LOCAL_STORAGE_TOKEN, res.data.accessToken);
-				dispatch(authActions.authenticate());
+				dispatch(authActions.authenticate(res.data.email));
 			})
 			.catch((e) => {
 				if (e?.response?.data.message === "AUTH.USER_NOT_CONFIRMED")

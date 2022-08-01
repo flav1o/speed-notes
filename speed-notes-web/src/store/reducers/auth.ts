@@ -4,11 +4,13 @@ import { AUTH_LOCAL_STORAGE_TOKEN } from "../../constants";
 interface IInitialState {
 	isAuthenticated: boolean;
 	accessToken: string | null;
+	userEmail: string | null;
 }
 
 const initialAuthState: IInitialState = {
 	isAuthenticated: false,
 	accessToken: null,
+	userEmail: null,
 };
 
 const authSlice = createSlice({
@@ -18,7 +20,8 @@ const authSlice = createSlice({
 		accessToken(state) {
 			state.accessToken = localStorage.getItem(AUTH_LOCAL_STORAGE_TOKEN);
 		},
-		authenticate(state) {
+		authenticate(state, action) {
+			state.userEmail = action.payload;
 			state.isAuthenticated = true;
 		},
 		logout(state) {

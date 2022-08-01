@@ -10,20 +10,24 @@ const Document = () => {
 	const [documentText, setDocumentText] = useState<string>(
 		"Hi! We are loading..."
 	);
-
 	useEffect(() => {
-		console.log("rendering");
 		socket = io("http://localhost:8001");
 
 		socket.emit("join-document", documentId);
 
-		socket.on("updating-document-content", (content: string) => {
-			setDocumentText(content);
+		socket.on("updating-document-content", (data: string) => {
+			data && setDocumentText(data);
 		});
 
+		socket.emit("send-document-content", { documentId, content: documentText });
+
 		socket.on("exception", (error: { message: string; status: number }) => {
-			console.log("exception", error);
 			alert(error.status);
+			console.log("disconnect");
+		});
+
+		socket.on("disconnect", () => {
+			console.log("disconnect");
 		});
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
