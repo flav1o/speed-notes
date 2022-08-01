@@ -1,11 +1,12 @@
 import * as mongoose from 'mongoose';
 
-export const ProblemSchema = new mongoose.Schema(
+export const DocumentSchema = new mongoose.Schema(
   {
-    _id: mongoose.Types.ObjectId,
+    owner: String,
     content: String,
     isLocked: Boolean,
     isPublic: Boolean,
+    ableToEdit: [String],
   },
   { timestamps: true, versionKey: false },
 );

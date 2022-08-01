@@ -28,9 +28,7 @@ export class DocumentGateway {
       .findDocumentById(clientDocumentId)
       .then((res: Document) => {
         client.join(clientDocumentId);
-        client
-          .to(clientDocumentId)
-          .emit('updating-document-content', res.content);
+        client.emit('updating-document-content', res.content);
       })
       .catch((err: HttpException) => client.emit('exception', err));
   }
@@ -40,8 +38,8 @@ export class DocumentGateway {
     @ConnectedSocket() client: Socket,
     @MessageBody() document: { documentText: string; documentId: string },
   ): void {
-    client
-      .to(document.documentId)
-      .emit('updating-document-content', document.documentText);
+    const { documentId, documentText } = document;
+    this.documentService.updateDocumentContent(documentId, documentText);
+    client.to(documentId).emit('updating-document-content', documentText);
   }
 }

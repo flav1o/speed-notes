@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { PassportModule } from '@nestjs/passport/dist/passport.module';
 import { ENTITIES_KEYS } from 'src/constants/index';
-import { ProblemSchema } from './document.model';
+import { DocumentSchema } from './document.model';
 import { DocumentService } from './document.service';
 import { DocumentResolver } from './gql/document.resolver';
 
@@ -9,8 +10,11 @@ import { DocumentResolver } from './gql/document.resolver';
   providers: [DocumentResolver, DocumentService],
   imports: [
     MongooseModule.forFeature([
-      { name: ENTITIES_KEYS.DOCUMENT_MODEL, schema: ProblemSchema },
+      { name: ENTITIES_KEYS.DOCUMENT_MODEL, schema: DocumentSchema },
     ]),
+    PassportModule.register({
+      defaultStrategy: 'jwt',
+    }),
   ],
   exports: [DocumentService],
 })

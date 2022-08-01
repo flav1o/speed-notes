@@ -1,12 +1,13 @@
 type Document {
   _id: ID
+  owner: String
   content: String
   isLocked: Boolean
   isPublic: Boolean
+  ableToEdit: [String]
 }
 
 input CreateDocumentInput {
-  content: String!
   isLocked: Boolean!
   isPublic: Boolean!
 }

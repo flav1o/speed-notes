@@ -1,9 +1,9 @@
 import { Controller, Post, Body, Query, UseGuards, Get } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/graphql/graphql-schema';
 import { AuthService } from './auth.service';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
-import { GetUser } from './get-user.decorator';
+import { AuthGuard } from 'src/common/guards/auth.guard';
+import { CurrentUser } from 'src/common/decorators/getCurrentUser';
 
 @Controller('auth')
 export class AuthController {
@@ -29,9 +29,9 @@ export class AuthController {
     return await this.authService.confirmAccount(email, token);
   }
 
-  @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard)
   @Get('me')
-  getUser(@GetUser() user: User): string {
+  getUser(@CurrentUser() user: User): string {
     return user.email;
   }
 }

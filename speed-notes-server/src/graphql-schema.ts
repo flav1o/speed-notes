@@ -9,16 +9,17 @@
 /* eslint-disable */
 
 export interface CreateDocumentInput {
-    content: string;
     isLocked: boolean;
     isPublic: boolean;
 }
 
 export interface Document {
     _id?: Nullable<string>;
+    owner?: Nullable<string>;
     content?: Nullable<string>;
     isLocked?: Nullable<boolean>;
     isPublic?: Nullable<boolean>;
+    ableToEdit?: Nullable<Nullable<string>[]>;
 }
 
 export interface IMutation {
