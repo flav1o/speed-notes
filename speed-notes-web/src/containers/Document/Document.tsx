@@ -10,6 +10,8 @@ const Document = () => {
 	const [documentText, setDocumentText] = useState<string>(
 		"Hi! We are loading..."
 	);
+	const [timer, setTimer] = useState<NodeJS.Timeout>();
+
 	useEffect(() => {
 		socket = io("http://localhost:8001");
 
@@ -33,13 +35,19 @@ const Document = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const updateText = React.useCallback((documentText: string) => {
-		socket.emit("send-document-content", {
-			documentText,
-			documentId,
-		});
+	const updateText = (documentText: string) => {
+		clearTimeout(timer);
+
+		const bounce = setTimeout(() => {
+			socket.emit("send-document-content", {
+				documentText,
+				documentId,
+			});
+		}, 1000);
+
+		setTimer(bounce);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	};
 
 	return (
 		<>

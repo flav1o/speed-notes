@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Document } from "./containers/Document/Document";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { setupI18n, setupTheme } from "./general-setup";
@@ -8,6 +8,7 @@ import { useAppSelector } from "./store";
 import { useDispatch } from "react-redux";
 import { authActions } from "./store/reducers/auth";
 import { AuthService } from "./services";
+import { Main } from "./containers/Document/Main";
 
 function App() {
 	setupI18n();
@@ -34,11 +35,11 @@ function App() {
 			<Router>
 				<Switch>
 					<Route path="/auth">
-						<Auth />
+						{!authState.isAuthenticated ? <Auth /> : <Main />}
 					</Route>
-					<Route path="/test">
-						{authState.isAuthenticated ? <Document /> : <Auth />}
-					</Route>
+					{/* <Route path="">
+						{authState.isAuthenticated ? <Main /> : <Auth />}
+					</Route> */}
 					<Route path="/document/:id">
 						<Document />
 					</Route>
