@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { RiFileLockFill, RiSave2Fill } from "react-icons/ri";
-import { Button, Box, makeStyles } from "@mui/material";
+import { Button, Box } from "@mui/material";
 
 export const Footer = () => {
 	const { t } = useTranslation();

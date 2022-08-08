@@ -21,4 +21,19 @@ export class DocumentResolver {
   ): Promise<Document> {
     return this.documentService.createDocument(document, user.email);
   }
+
+  @UseGuards(AuthGuard)
+  @Query('FindUserDocuments')
+  findUserDocuments(@CurrentUser() user: User): Promise<Document[]> {
+    return this.documentService.findDocumentsByOwner(user.email);
+  }
+
+  @UseGuards(AuthGuard)
+  @Mutation('DeleteDocumentById')
+  deleteDocumentById(
+    @Args('documentId') documentId: string,
+    @CurrentUser() user: User,
+  ): Promise<boolean> {
+    return this.documentService.deleteDocumentById(documentId, user.email);
+  }
 }

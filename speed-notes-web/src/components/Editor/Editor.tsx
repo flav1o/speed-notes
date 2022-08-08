@@ -14,7 +14,7 @@ export const Editor: React.FC<IEditorProps> = ({ onChange, documentText }) => {
 			extensions={[javascript({ jsx: true })]}
 			onChange={onChange}
 			theme="dark"
-			lang="javascript"
+			lang="typescript"
 			value={documentText}
 		/>
 	);

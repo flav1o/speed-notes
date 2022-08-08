@@ -11,6 +11,7 @@
 export class CreateDocumentInput {
     isLocked: boolean;
     isPublic: boolean;
+    title: string;
 }
 
 export class Document {
@@ -19,6 +20,7 @@ export class Document {
     content?: Nullable<string>;
     isLocked?: Nullable<boolean>;
     isPublic?: Nullable<boolean>;
+    title?: Nullable<string>;
     ableToEdit?: Nullable<Nullable<string>[]>;
 }
 

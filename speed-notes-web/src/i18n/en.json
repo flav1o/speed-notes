@@ -15,5 +15,13 @@
         "CONFIRMATION_CODE": "Code",
         "RESEND_CODE": "Resend",
         "CONFIRM_ACCOUNT": "Confirm"
+    },
+    "DOCUMENT_ALERTS": {
+        "DELETE_DOCUMENT_TITLE": "Deleting Document",
+        "DELETE_DOCUMENT_BODY": "By deleting this document the access/content will be lost forever! Without the option to recover it back!"
+    },
+    "MODAL": {
+        "CANCEL": "Cancel",
+        "OK": "Ok"
     }
 }

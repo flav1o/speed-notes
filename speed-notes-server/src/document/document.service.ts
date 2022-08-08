@@ -17,7 +17,7 @@ export class DocumentService {
   ): Promise<Document> {
     const create = new this.documentModel({
       ...document,
-      content: 'Welcome to speed notes!',
+      content: 'Welcome to Speed Notes!',
       ableToEdit: [],
       owner,
     });
@@ -46,5 +46,28 @@ export class DocumentService {
     );
 
     return document;
+  }
+
+  async findDocumentsByOwner(owner: string): Promise<Document[]> {
+    const documents: Document[] = await this.documentModel.find({ owner });
+
+    return documents;
+  }
+
+  async deleteDocumentById(
+    documentId: string,
+    owner: string,
+  ): Promise<boolean> {
+    const deletedDocument = await this.documentModel.findByIdAndDelete(
+      documentId,
+      {
+        owner,
+      },
+    );
+
+    if (!deletedDocument)
+      throw new HttpException('DOC.UNAUTHORIZED', HttpStatus.UNAUTHORIZED);
+
+    return !!deletedDocument;
   }
 }

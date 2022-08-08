@@ -34,12 +34,12 @@ function App() {
 		<ThemeProvider theme={theme}>
 			<Router>
 				<Switch>
+					<Route path="/" exact>
+						{!authState.isAuthenticated ? <Auth /> : <Main />}
+					</Route>
 					<Route path="/auth">
 						{!authState.isAuthenticated ? <Auth /> : <Main />}
 					</Route>
-					{/* <Route path="">
-						{authState.isAuthenticated ? <Main /> : <Auth />}
-					</Route> */}
 					<Route path="/document/:id">
 						<Document />
 					</Route>
