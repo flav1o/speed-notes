@@ -1,5 +1,5 @@
 export const GENERAL_APP_SETUP = {
-	DOCUMENT_DEBOUNCE_TIME: 1000,
+	DOCUMENT_DEBOUNCE_TIME: 0,
 };
 
 export const ENV = {

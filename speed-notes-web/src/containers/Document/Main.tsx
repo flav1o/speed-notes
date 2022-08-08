@@ -1,57 +1,72 @@
 import React, { useState } from "react";
-import { Grid, Theme } from "@mui/material";
+import { Grid, Theme, Typography } from "@mui/material";
 import { DataGrid, GridColDef, GridCellParams } from "@mui/x-data-grid";
 import { FIND_USER_DOCUMENTS } from "../../graphql/queries";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { makeStyles } from "@mui/styles";
 import {
 	RiDeleteBin5Line,
 	RiGitRepositoryPrivateLine,
 	RiShareForwardLine,
 } from "react-icons/ri";
+import { Dialog } from "../../components";
+import { useTranslation } from "react-i18next";
+import { DELETE_DOCUMENT } from "../../graphql/mutations";
 
 const mainPageStyles = makeStyles((theme: Theme) => ({
 	iconsMargin: {
 		margin: "0vh 1vw",
 		cursor: "pointer",
 
-		//on active state
 		"&:hover": {
 			color: theme.palette.primary.main,
+		},
+	},
+	hideRightSeparator: {
+		"& > .MuiDataGrid-columnSeparator": {
+			visibility: "hidden",
 		},
 	},
 }));
 
 export const Main = () => {
+	const [rows, setRows] = useState<any>([]);
+
+	const { t } = useTranslation();
 	const mainPageStyle = mainPageStyles();
+	const [deleteDocument] = useMutation(DELETE_DOCUMENT);
+	const [selectedDocumentId, setSelectedDocumentId] = useState<string>();
+
+	const dataGridSettings = {
+		hideSortIcons: true,
+		disableColumnMenu: true,
+		headerClassName: mainPageStyle.hideRightSeparator,
+	};
+
 	const columns: GridColDef[] = [
 		{
 			field: "_id",
 			headerName: "Document Identifier",
 			width: 300,
-			hideSortIcons: true,
-			disableColumnMenu: true,
+			...dataGridSettings,
 		},
 		{
 			field: "title",
 			headerName: "Name",
 			flex: 1,
-			hideSortIcons: true,
-			disableColumnMenu: true,
+			...dataGridSettings,
 		},
 		{
 			field: "isPublic",
 			headerName: "Public",
 			width: 200,
-			hideSortIcons: true,
-			disableColumnMenu: true,
+			...dataGridSettings,
 		},
 		{
 			field: "updatedAt",
 			headerName: "Last Update",
 			width: 200,
-			hideSortIcons: true,
-			disableColumnMenu: true,
+			...dataGridSettings,
 			renderCell: (params: GridCellParams) => {
 				return new Date(params.value).toTimeString();
 			},
@@ -60,8 +75,7 @@ export const Main = () => {
 			field: "actions",
 			headerName: "",
 			width: 200,
-			hideSortIcons: true,
-			disableColumnMenu: true,
+			...dataGridSettings,
 			align: "right",
 			renderCell: (params: GridCellParams) => (
 				<>
@@ -70,17 +84,40 @@ export const Main = () => {
 						className={mainPageStyle.iconsMargin}
 						size={20}
 					/>
-					<RiDeleteBin5Line className={mainPageStyle.iconsMargin} size={20} />
+					<RiDeleteBin5Line
+						className={mainPageStyle.iconsMargin}
+						size={20}
+						onClick={() => {
+							setAlertModalVisibility(true);
+							setSelectedDocumentId(params.id as string);
+						}}
+					/>
 				</>
 			),
 		},
 	];
-	const [rows, setRows] = useState<any>([]);
+
 	useQuery(FIND_USER_DOCUMENTS, {
 		onCompleted(data) {
 			setRows(data?.FindUserDocuments);
 		},
 	});
+
+	const [alertModalVisibility, setAlertModalVisibility] =
+		useState<boolean>(false);
+
+	const deleteDocumentHandler = () => {
+		deleteDocument({
+			variables: {
+				documentId: selectedDocumentId,
+			},
+		})
+			.then(() => {
+				setAlertModalVisibility(false);
+			})
+			//TODO: DISPLAY ERROR MODAL
+			.catch((err) => console.log(err.message));
+	};
 
 	return (
 		<Grid
@@ -93,6 +130,21 @@ export const Main = () => {
 				width: "100vw",
 			}}
 		>
+			<Dialog
+				isOpen={alertModalVisibility}
+				title={t("DOCUMENT_ALERTS.DELETE_DOCUMENT_TITLE")}
+				buttons={{
+					left: {
+						text: t("MODAL.CANCEL"),
+						onClick: () => setAlertModalVisibility(false),
+					},
+					right: { text: "OK", onClick: () => deleteDocumentHandler() },
+				}}
+			>
+				<Typography variant="body1">
+					{t("DOCUMENT_ALERTS.DELETE_DOCUMENT_BODY")}
+				</Typography>
+			</Dialog>
 			<DataGrid
 				rows={rows}
 				columns={columns}
@@ -104,7 +156,7 @@ export const Main = () => {
 				sx={{
 					backgroundColor: "white",
 					height: "50vh",
-					maxWidth: "80vw",
+					maxWidth: "70vw",
 				}}
 				hideFooter
 			/>

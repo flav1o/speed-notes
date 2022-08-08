@@ -53,7 +53,7 @@ const Document = () => {
 	return (
 		<>
 			<Editor onChange={updateText} documentText={documentText} />
-			<Footer />
+			{/* <Footer /> */}
 		</>
 	);
 };
