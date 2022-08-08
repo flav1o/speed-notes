@@ -4,18 +4,24 @@ type Document {
   content: String
   isLocked: Boolean
   isPublic: Boolean
+  title: String
   ableToEdit: [String]
+  createdAt: String
+  updatedAt: String
 }
 
 input CreateDocumentInput {
   isLocked: Boolean!
   isPublic: Boolean!
+  title: String!
 }
 
 type Mutation {
   CreateDocument(input: CreateDocumentInput!): Document!
+  DeleteDocumentById(documentId: String!): Boolean!
 }
 
 type Query {
   FindDocumentById(documentId: ID!): Document!
+  FindUserDocuments: [Document]!
 }

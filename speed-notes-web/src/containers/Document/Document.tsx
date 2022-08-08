@@ -2,15 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Editor, Footer } from "../../components";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
+import { GENERAL_APP_SETUP } from "../../config/environment";
 
 let socket: any = null;
 
 const Document = () => {
 	const { id: documentId } = useParams<{ id: string }>();
+	const [timer, setTimer] = useState<NodeJS.Timeout>();
 	const [documentText, setDocumentText] = useState<string>(
 		"Hi! We are loading..."
 	);
-	const [timer, setTimer] = useState<NodeJS.Timeout>();
 
 	useEffect(() => {
 		socket = io("http://localhost:8001");
@@ -43,7 +44,7 @@ const Document = () => {
 				documentText,
 				documentId,
 			});
-		}, 1000);
+		}, GENERAL_APP_SETUP.DOCUMENT_DEBOUNCE_TIME);
 
 		setTimer(bounce);
 		// eslint-disable-next-line react-hooks/exhaustive-deps

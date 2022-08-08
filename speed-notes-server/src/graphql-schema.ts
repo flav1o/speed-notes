@@ -11,6 +11,7 @@
 export interface CreateDocumentInput {
     isLocked: boolean;
     isPublic: boolean;
+    title: string;
 }
 
 export interface Document {
@@ -19,15 +20,20 @@ export interface Document {
     content?: Nullable<string>;
     isLocked?: Nullable<boolean>;
     isPublic?: Nullable<boolean>;
+    title?: Nullable<string>;
     ableToEdit?: Nullable<Nullable<string>[]>;
+    createdAt?: Nullable<string>;
+    updatedAt?: Nullable<string>;
 }
 
 export interface IMutation {
     CreateDocument(input: CreateDocumentInput): Document | Promise<Document>;
+    DeleteDocumentById(documentId: string): boolean | Promise<boolean>;
 }
 
 export interface IQuery {
     FindDocumentById(documentId: string): Document | Promise<Document>;
+    FindUserDocuments(): Nullable<Document>[] | Promise<Nullable<Document>[]>;
     confirmUser(email: string, token: string): User | Promise<User>;
 }
 
