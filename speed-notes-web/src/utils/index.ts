@@ -1,4 +1,0 @@
-export enum INPUT_TYPE {
-	MULTI_LINE,
-	SINGLE_LINE,
-}

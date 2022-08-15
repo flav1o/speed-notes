@@ -1,0 +1,8 @@
+export enum INPUT_TYPE {
+	MULTI_LINE,
+	SINGLE_LINE,
+}
+
+export enum MAIN_MODAL_TYPE {
+	DELETE_DOCUMENT = "DELETE_DOCUMENT",
+}

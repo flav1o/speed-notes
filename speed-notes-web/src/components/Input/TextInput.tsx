@@ -1,7 +1,7 @@
 import { TextField, InputAdornment } from "@mui/material";
 import React from "react";
 import { Controller } from "react-hook-form";
-import { INPUT_TYPE } from "../../utils/index";
+import { INPUT_TYPE } from "../../types";
 
 interface ITextInputProps {
 	name: string;

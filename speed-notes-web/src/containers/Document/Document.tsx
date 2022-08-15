@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Editor, Footer } from "../../components";
+import { Editor } from "../../components";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
 import { GENERAL_APP_SETUP } from "../../config/environment";
@@ -53,7 +53,6 @@ const Document = () => {
 	return (
 		<>
 			<Editor onChange={updateText} documentText={documentText} />
-			{/* <Footer /> */}
 		</>
 	);
 };
