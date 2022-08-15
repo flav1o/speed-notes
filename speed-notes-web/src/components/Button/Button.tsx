@@ -6,15 +6,19 @@ import LoadingAnimation from "../../assets/lotties/ButtonLoading.json";
 interface IButtonProps {
 	onClick: () => void;
 	text: string;
+	variant?: "contained" | "outlined" | "text";
 	disabled?: boolean;
 	isLoading?: boolean;
+	sx?: any;
 }
 
 export const Button: React.FC<IButtonProps> = ({
 	onClick,
 	text,
+	variant,
 	disabled,
 	isLoading,
+	sx,
 }) => {
 	const defaultOptions = {
 		loop: true,
@@ -27,7 +31,8 @@ export const Button: React.FC<IButtonProps> = ({
 		<TButton
 			onClick={onClick}
 			disabled={disabled || isLoading}
-			onDoubleClick={() => console.log("asd")}
+			variant={variant ? variant : "contained"}
+			sx={sx}
 		>
 			{isLoading ? (
 				<Lottie options={defaultOptions} height={130} width={130} />

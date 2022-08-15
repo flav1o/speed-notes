@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { AnyArray, Model } from 'mongoose';
+import { Model } from 'mongoose';
 import { ENTITIES_KEYS } from 'src/constants';
 import { CreateDocumentInput, Document } from 'src/graphql/graphql-schema';
 
@@ -49,7 +49,9 @@ export class DocumentService {
   }
 
   async findDocumentsByOwner(owner: string): Promise<Document[]> {
-    const documents: Document[] = await this.documentModel.find({ owner });
+    const documents: Document[] = await this.documentModel
+      .find({ owner })
+      .sort({ updatedAt: -1 });
 
     return documents;
   }

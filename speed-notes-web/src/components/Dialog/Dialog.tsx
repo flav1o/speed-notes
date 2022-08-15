@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import React from "react";
 
-interface IDialogProps {
+export interface IDialogProps {
 	isOpen: boolean;
 	title: string;
 	buttons: {
@@ -15,17 +15,23 @@ interface IDialogProps {
 		right: { text: string; onClick: () => void };
 	};
 	children: React.ReactNode;
+	size?: "xs" | "sm" | "md" | "lg" | "xl";
 }
 
 const Dialog: React.FC<IDialogProps> = ({
 	isOpen,
 	title,
 	buttons,
+	size,
 	children,
 }) => {
 	return (
 		<>
-			<MuiDialog open={isOpen} onClose={buttons.left.onClick}>
+			<MuiDialog
+				open={isOpen}
+				onClose={buttons.left.onClick}
+				maxWidth={size ? size : "xs"}
+			>
 				<DialogTitle>{title}</DialogTitle>
 				<DialogContent>{children}</DialogContent>
 				<DialogActions>

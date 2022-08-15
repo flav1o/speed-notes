@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import { makeStyles } from "@mui/styles";
-import { ThemeColors } from "../../../styles/common";
+import { ThemeColors } from "../../styles/common";
 import { Box, Grid, Button, Typography, Theme, TextField } from "@mui/material";
-import sidePanel from "../../../assets/backgrounds/auth-forest-background.png";
-import BrandLogo from "../../../assets/branding/logo.png";
-import { TextInput, Dialog } from "../../../components/index";
-import { INPUT_TYPE } from "../../../utils";
+import sidePanel from "../../assets/backgrounds/auth-forest-background.png";
+import BrandLogo from "../../assets/branding/logo.png";
+import { TextInput, Dialog } from "../../components/index";
+import { INPUT_TYPE } from "../../types";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { RiLockLine, RiMailLine } from "react-icons/ri";
-import { AUTH_FORM_NAMES, AUTH_LOCAL_STORAGE_TOKEN } from "../../../constants";
-import { AuthService } from "../../../services";
+import { AUTH_FORM_NAMES, AUTH_LOCAL_STORAGE_TOKEN } from "../../constants";
+import { AuthService } from "../../services";
 import { useDispatch } from "react-redux";
-import { authActions } from "../../../store/reducers/auth";
+import { authActions } from "../../store/reducers/auth";
 
 interface IAuthFormData {
 	email: string;
